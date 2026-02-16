@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E‑Book Management System — Single File</title>
+
+<style>
+/* ================= CSS3 + FLEX + GRID ================= */
+:root{
+  --primary:#4a148c;
+  --accent:#7b1fa2;
+  --dark:#222;
+  --light:#f3e5f5;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+header{
+  background:var(--primary);
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+/* FLEX LAYOUT */
+.layout{
+  flex:1;
+  display:flex;
+  min-height:0;
+}
+
+nav{
+  width:220px;
+  background:var(--dark);
+  display:flex;
+  flex-direction:column;
+}
+
+nav button{
+  background:none;
+  border:none;
+  color:white;
+  padding:14px;
+  text-align:left;
+  cursor:pointer;
+  border-bottom:1px solid #333;
+  font-size:15px;
+  transition:.3s;
+}
+nav button:hover{
+  background:var(--accent);
+  padding-left:22px;
+}
+
+main{
+  flex:1;
+  padding:20px;
+  overflow:auto;
+  background:#fafafa;
+}
+
+footer{
+  background:#111;
+  color:white;
+  text-align:center;
+  padding:10px;
+}
+
+/* FORM — CSS GRID */
+.form{
+  background:white;
+  max-width:520px;
+  padding:25px;
+  border-radius:8px;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+.form h2{grid-column:1/3;margin:0 0 10px}
+.form input, .form button{
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:4px;
+}
+.form button{
+  grid-column:1/3;
+  background:var(--accent);
+  color:white;
+  border:none;
+}
+
+/* LOGIN FLEX */
+.login{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  width:320px;
+  background:white;
+  padding:25px;
+  border-radius:8px;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+/* CATALOG — CSS GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.card{
+  background:white;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 3px 8px rgba(0,0,0,.1);
+  display:flex;
+  flex-direction:column;
+}
+.card button{
+  margin-top:auto;
+  padding:8px;
+  border:none;
+  background:var(--accent);
+  color:white;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+}
+th,td{
+  border:1px solid #ccc;
+  padding:10px;
+  text-align:left;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .layout{flex-direction:column}
+  nav{
+    width:100%;
+    flex-direction:row;
+  }
+  nav button{
+    flex:1;
+    text-align:center;
+    border-right:1px solid #333;
+    border-bottom:none;
+  }
+  .form{grid-template-columns:1fr}
+  .form h2,.form button{grid-column:1}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>E‑Book Management System</h1>
+</header>
+
+<div class="layout">
+  <nav>
+    <button onclick="showPage('register')">Registration</button>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="showPage('catalog')">Catalog</button>
+    <button onclick="showPage('cart')">Cart</button>
+  </nav>
+
+  <main id="content"></main>
+</div>
+
+<footer>
+  © E‑Book System — Software Engineering Lab
+</footer>
+
+<script>
+/* ================= DATA ================= */
+const books=[
+ {id:1,title:'Software Engineering',price:300},
+ {id:2,title:'Data Structures',price:250},
+ {id:3,title:'Web Technologies',price:280},
+ {id:4,title:'Java Programming',price:320},
+ {id:5,title:'DBMS',price:260}
+];
+
+/* ================= PAGE ROUTER ================= */
+function showPage(page){
+ if(page==='register') renderRegister();
+ if(page==='login') renderLogin();
+ if(page==='catalog') renderCatalog();
+ if(page==='cart') renderCart();
+}
+
+/* ================= REGISTER ================= */
+function renderRegister(){
+content.innerHTML=`
+<form class="form" onsubmit="event.preventDefault(); alert('Registered'); showPage('login')">
+<h2>User Registration</h2>
+<input placeholder="Full Name" required>
+<input type="email" placeholder="Email" required>
+<input type="password" placeholder="Password" required>
+<input type="password" placeholder="Confirm Password" required>
+<button>Register</button>
+</form>`;
+}
+
+/* ================= LOGIN ================= */
+function renderLogin(){
+content.innerHTML=`
+<div class="login">
+<h2>Login</h2>
+<input placeholder="Email" required>
+<input type="password" placeholder="Password" required>
+<button onclick="showPage('catalog')">Login</button>
+</div>`;
+}
+
+/* ================= CATALOG ================= */
+function renderCatalog(){
+let html='<h2>E‑Book Catalog</h2><div class="grid">';
+books.forEach(b=>{
+ html+=`<div class="card">
+ <h3>${b.title}</h3>
+ <p>₹${b.price}</p>
+ <button onclick="addToCart(${b.id})">Add to Cart</button>
+ </div>`;
+});
+html+='</div>';
+content.innerHTML=html;
+}
+
+function addToCart(id){
+ let cart=JSON.parse(localStorage.getItem('ebook_cart')||'[]');
+ let item=cart.find(x=>x.id===id);
+ if(item) item.qty++;
+ else{
+  let b=books.find(x=>x.id===id);
+  cart.push({...b,qty:1});
+ }
+ localStorage.setItem('ebook_cart',JSON.stringify(cart));
+ alert('Added to cart');
+}
+
+/* ================= CART ================= */
+function renderCart(){
+ let cart=JSON.parse(localStorage.getItem('ebook_cart')||'[]');
+ let rows='';
+ let total=0;
+ cart.forEach(b=>{
+  let t=b.price*b.qty;
+  total+=t;
+  rows+=`<tr>
+  <td>${b.title}</td>
+  <td>${b.qty}</td>
+  <td>₹${b.price}</td>
+  <td>₹${t}</td>
+  <td><button onclick="removeItem(${b.id})">Remove</button></td>
+  </tr>`;
+ });
+
+ content.innerHTML=`
+ <h2>Your Cart</h2>
+ <table>
+ <tr><th>Book</th><th>Qty</th><th>Price</th><th>Total</th><th></th></tr>
+ ${rows}
+ </table>
+ <h3>Grand Total: ₹${total}</h3>`;
+}
+
+function removeItem(id){
+ let cart=JSON.parse(localStorage.getItem('ebook_cart')||'[]');
+ cart=cart.filter(x=>x.id!==id);
+ localStorage.setItem('ebook_cart',JSON.stringify(cart));
+ renderCart();
+}
+
+/* DEFAULT PAGE */
+showPage('register');
+</script>
+</body>
+</html>
+
