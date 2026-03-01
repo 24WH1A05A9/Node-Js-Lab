@@ -6,7 +6,6 @@
 <title>E‑Book Management System — Single File</title>
 
 <style>
-/* ================= CSS3 + FLEX + GRID ================= */
 :root{
   --primary:#4a148c;
   --accent:#7b1fa2;
@@ -29,7 +28,6 @@ header{
   text-align:center;
 }
 
-/* FLEX LAYOUT */
 .layout{
   flex:1;
   display:flex;
@@ -73,7 +71,6 @@ footer{
   padding:10px;
 }
 
-/* FORM — CSS GRID */
 .form{
   background:white;
   max-width:520px;
@@ -97,7 +94,6 @@ footer{
   border:none;
 }
 
-/* LOGIN FLEX */
 .login{
   display:flex;
   flex-direction:column;
@@ -109,7 +105,6 @@ footer{
   box-shadow:0 4px 10px rgba(0,0,0,.1);
 }
 
-/* CATALOG — CSS GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -131,7 +126,6 @@ footer{
   color:white;
 }
 
-/* TABLE */
 table{
   width:100%;
   border-collapse:collapse;
@@ -143,7 +137,6 @@ th,td{
   text-align:left;
 }
 
-/* RESPONSIVE */
 @media(max-width:768px){
   .layout{flex-direction:column}
   nav{
@@ -184,7 +177,6 @@ th,td{
 </footer>
 
 <script>
-/* ================= DATA ================= */
 const books=[
  {id:1,title:'Software Engineering',price:300},
  {id:2,title:'Data Structures',price:250},
@@ -193,7 +185,6 @@ const books=[
  {id:5,title:'DBMS',price:260}
 ];
 
-/* ================= PAGE ROUTER ================= */
 function showPage(page){
  if(page==='register') renderRegister();
  if(page==='login') renderLogin();
@@ -201,7 +192,6 @@ function showPage(page){
  if(page==='cart') renderCart();
 }
 
-/* ================= REGISTER ================= */
 function renderRegister(){
 content.innerHTML=`
 <form class="form" onsubmit="event.preventDefault(); alert('Registered'); showPage('login')">
@@ -214,7 +204,6 @@ content.innerHTML=`
 </form>`;
 }
 
-/* ================= LOGIN ================= */
 function renderLogin(){
 content.innerHTML=`
 <div class="login">
@@ -225,7 +214,6 @@ content.innerHTML=`
 </div>`;
 }
 
-/* ================= CATALOG ================= */
 function renderCatalog(){
 let html='<h2>E‑Book Catalog</h2><div class="grid">';
 books.forEach(b=>{
@@ -251,7 +239,6 @@ function addToCart(id){
  alert('Added to cart');
 }
 
-/* ================= CART ================= */
 function renderCart(){
  let cart=JSON.parse(localStorage.getItem('ebook_cart')||'[]');
  let rows='';
@@ -284,7 +271,6 @@ function removeItem(id){
  renderCart();
 }
 
-/* DEFAULT PAGE */
 showPage('register');
 </script>
 </body>
