@@ -2,7 +2,7 @@
   "name": "todo-app",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://24WH1A05A9.github.io/Node-Js-Lab",
+"homepage": "https://24WH1A05A9.github.io/todo-app",
   "type": "module",
   "scripts": {
     "dev": "vite",
