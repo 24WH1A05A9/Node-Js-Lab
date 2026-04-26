@@ -5,7 +5,6 @@
 "homepage": "https://24WH1A05A9.github.io/todo-app",
   "type": "module",
   "scripts": {
-    "scripts": {
   "dev": "vite",
   "build": "vite build",
   "preview": "vite preview",
